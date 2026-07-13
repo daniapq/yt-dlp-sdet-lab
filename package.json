@@ -1,0 +1,28 @@
+{
+  "name": "yt-dlp-sdet-lab",
+  "version": "1.0.0",
+  "description": "A TypeScript testing project for validating yt-dlp CLI behavior, media outputs, recovery policies, and HLS failure scenarios.\r ## Purpose",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniapq/yt-dlp-sdet-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/daniapq/yt-dlp-sdet-lab/issues"
+  },
+  "homepage": "https://github.com/daniapq/yt-dlp-sdet-lab#readme",
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "execa": "^9.6.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}
