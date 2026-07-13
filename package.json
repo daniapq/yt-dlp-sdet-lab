@@ -21,10 +21,8 @@
   "homepage": "https://github.com/daniapq/yt-dlp-sdet-lab#readme",
   "devDependencies": {
     "@types/node": "^26.1.1",
+    "execa": "^9.6.1",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
-  },
-  "dependencies": {
-    "execa": "^9.6.1"
   }
 }
