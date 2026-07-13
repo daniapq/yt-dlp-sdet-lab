@@ -1,5 +1,5 @@
 # yt-dlp-sdet-lab
-A TypeScript testing project for validating yt-dlp CLI behavior, media outputs, recovery policies, and HLS failure scenarios.
+A TypeScript testing project for validating yt-dlp CLI behavior, synthetic media generation, media outputs, recovery policies, and HLS failure scenarios.
 ## Purpose
 
 This repository is an educational SDET project for testing the public
@@ -9,6 +9,7 @@ It focuses on:
 
 - CLI arguments, configuration, and exit codes
 - stdout and stderr validation
+- synthetic media generation with `ffmpeg`
 - media output verification with `ffprobe`
 - interrupted-download recovery
 - strict and tolerant failure policies
@@ -38,8 +39,8 @@ This project does not provide, promote, or test mechanisms intended to:
 - distribute copyrighted media
 - publish authentication cookies, tokens, or credentials
 
-The HLS failure tests use locally generated synthetic media and controlled
-test fixtures. Public media should not be committed to this repository.
+Synthetic media and HLS failure fixtures are generated locally with FFmpeg and
+validated with ffprobe. Public media should not be committed to this repository.
 
 ## Privacy and test data
 
@@ -58,13 +59,45 @@ Generated media, logs, metadata, and partial downloads are excluded through
 ## Dependencies
 
 This repository does not bundle or redistribute `yt-dlp`, FFmpeg, or
-`ffprobe`. They must be installed separately by the user.
+`ffprobe`. They must be installed separately by the user. FFmpeg is used to
+generate controlled synthetic media fixtures, and ffprobe is used to inspect
+the generated media artifacts.
 
 Each dependency is distributed under its own license. Refer to the official
 projects for their current licensing and redistribution requirements:
 
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 - [FFmpeg](https://ffmpeg.org/legal.html)
+
+## Environment variables
+
+The test runners read executable paths from environment variables. Integration
+tests also use environment variables for local test inputs. Do not commit real
+tokens, cookies, signed URLs, private media paths, or machine-specific secrets.
+
+| Variable | Required | Used by | Description |
+| --- | --- | --- | --- |
+| `YT_DLP_PATH` | Yes for yt-dlp tests | `src/ytDlpRunner.ts` | Path or command name for the `yt-dlp` executable. |
+| `FFMPEG_PATH` | Yes for synthetic media generation tests | `src/ffmpegRunner.ts` | Path or command name for the `ffmpeg` executable. |
+| `FFPROBE_PATH` | Yes for media probe tests | `src/ffprobeRunner.ts` | Path or command name for the `ffprobe` executable. |
+| `YT_DLP_TEST_URL` | Optional | profile and partial-success integration tests | Authorized test URL used by yt-dlp integration tests. Tests that require it are skipped when unset. |
+| `MEDIA_TEST_FILE` | Optional | media probe integration tests | Local media file path used to validate ffprobe parsing. Tests that require it are skipped when unset. |
+
+Example PowerShell setup:
+
+```powershell
+$env:YT_DLP_PATH = "yt-dlp"
+$env:FFMPEG_PATH = "ffmpeg"
+$env:FFPROBE_PATH = "ffprobe"
+$env:YT_DLP_TEST_URL = "https://example.test/authorized-test-video"
+$env:MEDIA_TEST_FILE = "D:\path\to\authorized-test-media.mp4"
+
+npm.cmd test
+```
+
+Use `YT_DLP_TEST_URL` only with media you own, have permission to access, or are
+otherwise legally authorized to test. Use `MEDIA_TEST_FILE` for synthetic,
+owned, authorized, or public-domain media.
 
 ## Disclaimer
 
