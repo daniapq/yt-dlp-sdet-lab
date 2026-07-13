@@ -68,4 +68,16 @@ describe("parseMediaProbe", () => {
       parseMediaProbe("not valid JSON")
     ).toThrow();
   });
+
+  test("rejects a JSON array at the root", () => {
+    expect(() =>
+      parseMediaProbe("[]")
+    ).toThrow("JSON object");
+  });
+
+  test("rejects null at the root", () => {
+    expect(() =>
+      parseMediaProbe("null")
+    ).toThrow("JSON object");
+  });
 });
