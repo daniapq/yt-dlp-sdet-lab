@@ -1,5 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { runFfprobe } from "../src/ffprobeRunner.js";
+import {
+  probeMedia,
+  runFfprobe
+} from "../src/ffprobeRunner.js";
 
 describe("ffprobe CLI contract", () => {
   test("returns version information", async () => {
@@ -21,5 +24,15 @@ describe("ffprobe CLI contract", () => {
     expect(result.exitCode).not.toBe(0);
     expect(result.failed).toBe(true);
     expect(result.stderr).not.toBe("");
+  });
+
+  test("returns no media metadata when probing fails", async () => {
+    const result = await probeMedia(
+      "file-that-does-not-exist.mp4"
+    );
+
+    expect(result.execution.exitCode).not.toBe(0);
+    expect(result.execution.failed).toBe(true);
+    expect(result.media).toBeUndefined();
   });
 });
