@@ -1,4 +1,7 @@
 # yt-dlp-sdet-lab
+
+[![Test](https://github.com/daniapq/yt-dlp-sdet-lab/actions/workflows/test.yml/badge.svg)](https://github.com/daniapq/yt-dlp-sdet-lab/actions/workflows/test.yml)
+
 A TypeScript testing project for validating yt-dlp CLI behavior, synthetic media generation, media outputs, recovery policies, and HLS failure scenarios.
 ## Purpose
 
