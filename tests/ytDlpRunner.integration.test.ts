@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { runYtDlp } from "../src/ytDlpRunner.js";
 
-describe("yt-dlp CLI contract", () => {
+describe("yt-dlp CLI integration", () => {
   test("returns its version through stdout", async () => {
     const result = await runYtDlp(["--version"]);
 

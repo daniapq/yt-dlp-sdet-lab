@@ -1,7 +1,7 @@
 {
   "name": "yt-dlp-sdet-lab",
   "version": "1.0.0",
-  "description": "A TypeScript testing project for validating yt-dlp CLI behavior, media outputs, recovery policies, and HLS failure scenarios.\r ## Purpose",
+  "description": "A TypeScript SDET lab for validating yt-dlp CLI behavior, synthetic media artifacts, recovery policies, and controlled failure scenarios.",
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",

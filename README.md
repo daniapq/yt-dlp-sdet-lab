@@ -20,8 +20,56 @@ It focuses on:
 - automated testing with TypeScript and Vitest
 
 This project is not intended to test every internal feature of `yt-dlp`.
-It validates only the behaviors and integration contracts used by this
-test suite.
+It validates only the observable CLI behavior and integration boundaries used
+by this test suite.
+
+## Architecture
+
+| Component | Responsibility |
+| --- | --- |
+| `src/cliRunner.ts` | Executes external CLIs without shell command construction and returns structured process results. |
+| `src/ytDlpRunner.ts` | Resolves and executes the configured yt-dlp binary. |
+| `src/ffmpegRunner.ts` | Executes FFmpeg to generate controlled synthetic media. |
+| `src/ffprobeRunner.ts` | Inspects media streams and formats, with optional frame counting. |
+| `src/mediaProbe.ts` | Defines and parses structured FFprobe metadata. |
+| `src/policies/` | Classifies strict, tolerant, partial, failed, and cancelled executions. |
+| `tests/support/syntheticMediaFactory.ts` | Builds deterministic audiovisual, video-only, and audio-only fixtures. |
+
+## Synthetic media scenarios
+
+The deterministic integration suite generates temporary media during test
+execution and removes it afterward. Generated files are not committed.
+
+Covered scenarios include:
+
+- MP4 with MPEG-4 video and AAC audio
+- explicit resolution, duration, frame rate, and audio sample rate
+- streams with different durations and `-shortest` behavior
+- video-only and audio-only media
+- WebM with VP9 video and Opus audio
+- optional frame counting with ffprobe
+- unavailable encoders
+- incompatible codec and container combinations
+- structurally invalid media produced by truncating a valid MP4
+
+The tests validate both process execution and the generated artifact. A
+successful exit code alone is not treated as proof that the media satisfies
+the expected properties.
+
+## Test layers
+
+- Unit tests validate parsers, policies, and synthetic argument construction.
+- Deterministic integration tests execute local CLI tools and inspect their
+  observable outputs.
+- Network-dependent yt-dlp tests remain separate and can be skipped when their
+  authorized external inputs are not configured.
+
+- Unit tests validate parsers, policies, configuration checks, and FFmpeg
+  argument construction without requiring network access.
+- Deterministic integration tests execute local CLI tools and validate their
+  observable outputs and filesystem effects.
+- Network-dependent yt-dlp tests remain isolated and are skipped when their
+  authorized test inputs are not configured.
 
 ## Responsible use
 

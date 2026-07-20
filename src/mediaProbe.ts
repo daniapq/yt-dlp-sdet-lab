@@ -4,6 +4,9 @@ export interface MediaStream {
   codec_type?: string;
   width?: number;
   height?: number;
+  sample_rate?: string;
+  duration?: string;
+  nb_read_frames?: string;
 }
 
 export interface MediaFormat {

@@ -44,16 +44,27 @@ Do not assume that exit code 0 alone proves that an output is correct.
 
 Keep responsibilities separated:
 
-- `src/ytDlpRunner.ts`
-  - execute yt-dlp as a child process
-  - accept an executable path and argument array
-  - capture stdout, stderr, and exit code
+- `src/cliRunner.ts`
+  - execute an external CLI from an executable path and argument array
+  - capture stdout, stderr, exit code, and failure state
   - avoid shell command construction
+
+- `src/ytDlpRunner.ts`
+  - resolve yt-dlp from `YT_DLP_PATH`
+  - delegate process execution to the shared CLI runner
 
 - `src/ffprobeRunner.ts`
   - execute ffprobe
   - parse media metadata
   - return structured stream and format information
+
+- `src/ffmpegRunner.ts`
+  - execute FFmpeg through the shared CLI runner
+  - preserve stdout, stderr, and exit code
+
+- `src/mediaProbe.ts`
+  - define structured media metadata
+  - validate and parse FFprobe JSON output
 
 - `src/policies/`
   - classify execution results
@@ -63,6 +74,11 @@ Keep responsibilities separated:
 - `tests/`
   - define behavior and assertions
   - avoid duplicating process-execution logic
+
+- `tests/support/syntheticMediaFactory.ts`
+  - build deterministic FFmpeg argument arrays
+  - support audiovisual, video-only, and audio-only fixtures
+  - reject incoherent fixture configurations before execution
 
 - `configs/`
   - contain explicit yt-dlp profiles used by tests
@@ -144,3 +160,4 @@ Before committing, run:
 npm run typecheck
 npm test
 git status
+```
