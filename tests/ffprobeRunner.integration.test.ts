@@ -4,7 +4,7 @@ import {
   runFfprobe
 } from "../src/ffprobeRunner.js";
 
-describe("ffprobe CLI contract", () => {
+describe("ffprobe CLI integration", () => {
   test("returns version information", async () => {
     const result = await runFfprobe(["-version"]);
 

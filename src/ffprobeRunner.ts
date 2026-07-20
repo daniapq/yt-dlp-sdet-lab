@@ -18,6 +18,10 @@ export interface ProbeResult {
   media?: MediaProbe;
 }
 
+export interface ProbeMediaOptions {
+  countFrames?: boolean;
+}
+
 export async function runFfprobe(
   args: readonly string[]
 ): Promise<CliResult> {
@@ -25,19 +29,29 @@ export async function runFfprobe(
 }
 
 export async function probeMedia(
-  filePath: string
+  filePath: string,
+  options: ProbeMediaOptions = {}
 ): Promise<ProbeResult> {
-  const execution = await runFfprobe([
+  const args: string[] = [
     "-v",
-    "error",
+    "error"
+  ];
+
+  if (options.countFrames) {
+    args.push("-count_frames");
+  }
+
+  args.push(
     "-show_entries",
     "format=format_name,duration,size",
     "-show_entries",
-    "stream=index,codec_type,codec_name,width,height",
+    "stream=index,codec_type,codec_name,width,height,sample_rate,duration,nb_read_frames",
     "-of",
     "json",
     filePath
-  ]);
+  );
+
+  const execution = await runFfprobe(args);
 
   if (execution.exitCode !== 0) {
     return { execution };
